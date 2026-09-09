@@ -2,7 +2,7 @@
 const EXAM = {
   max: 160,
   negDiv: 4, // -0.25 per wrong = -1/4
-  cuts: { UR: 57, EWS: 54, OBC: 51, SC: 45, ST: 43 },
+  cuts: { UR: 51, EWS: 48, OBC: 45, SC: 39, ST: 37 },
   pwbdRelax: 8,
   pool: 11500 // mock size of the Mains candidate pool used for percentile shaping
 };
@@ -18,63 +18,70 @@ const ICONS = {
   share: '<svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
 
-// Order matches the 2x2 layout in the reference design: low | border // good | strong
-const BAND_ORDER = ['low', 'border', 'good', 'strong'];
-
+// Each band now carries exactly one suggestion, with a primary and a
+// secondary call to action (instead of two separate suggestion cards).
 const VERDICTS = {
   low: {
-    badge: 'Chances are low', icon: 'shield', badgeBg: '#FCE7E6', badgeFg: '#DC2626',
+    badge: 'Chances are low', icon: 'shield', tint: '#FDEEEC', tintLine: '#F6D3CE',
     dot: '#E5533D', ink: '#B4453A',
     headline: 'This attempt may not go your way.',
     msg: "But one attempt doesn't decide your Nursing Officer dream.",
-    example: { chance: 32, marks: '42.00', pctl: '28.4', attempted: 86 },
-    actions: [
-      { icon: 'book', iconBg: '#FCE7E6', title: 'Next attempt ki tayari shuru karein', desc: 'Is baar ka experience aapko aur strong banayega.', btn: 'Prepare for NORCET 12', btnBg: '#F6D3CE', btnFg: '#B4453A' },
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Mentor se baat karein', desc: 'Apne marks ke basis par samjhiye kahan improvement chahiye.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
-    ],
+    suggestion: {
+      icon: 'book', iconBg: '#FCE7E6',
+      title: 'Next attempt ki tayari shuru karein',
+      desc: 'Is baar ka experience aapko aur strong banayega.',
+      primary: 'Prepare for NORCET 12',
+      secondary: 'Talk to a mentor'
+    },
     quote: 'Bahut se Nursing Officers ka selection first attempt mein nahi hua tha.'
   },
   border: {
-    badge: 'Borderline', icon: 'warning', badgeBg: '#FFF1E0', badgeFg: '#C2410C',
-    dot: '#FF6B2C', ink: '#C2410C',
+    badge: 'Borderline', icon: 'warning', tint: '#FFF7E4', tintLine: '#F5DFA6',
+    dot: '#D98324', ink: '#B4630F',
     headline: "You're close. It can still go either way.",
     msg: "Hope for the result, but don't stop preparing.",
-    example: { chance: 56, marks: '53.00', pctl: '56.9', attempted: 78 },
-    actions: [
-      { icon: 'book', iconBg: '#FFF1E0', title: 'Preparation continue karein', desc: 'Result ka wait karte hue preparation mat rokiye.', btn: 'Continue preparing', btnBg: '#FF6B2C', btnFg: '#fff' },
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Apne chances samajhna chahte hain?', desc: 'NPrep mentor se baat karke clear guidance paayein.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
-    ],
+    suggestion: {
+      icon: 'book', iconBg: '#FFF1E0',
+      title: 'Preparation continue karein',
+      desc: 'Result ka wait karte hue preparation mat rokiye.',
+      primary: 'Continue preparing',
+      secondary: 'Talk to a mentor'
+    },
     quote: 'Hope rakhiye. Lekin preparation ka rhythm mat todiye.'
   },
   good: {
-    badge: 'Good chance', icon: 'trending', badgeBg: '#E3F8EC', badgeFg: '#15803D',
+    badge: 'Good chance', icon: 'trending', tint: '#EAFBF1', tintLine: '#BFEDD3',
     dot: '#22C55E', ink: '#15803D',
     headline: 'Your chances are looking good. 🤞',
     msg: "You're in a strong position. The final result is now awaited.",
-    example: { chance: 78, marks: '67.00', pctl: '72.1', attempted: 94 },
-    actions: [
-      { icon: 'people', iconBg: '#E3F8EC', title: 'NPrep community join karein', desc: 'Seniors aur fellow aspirants se connected rahiye.', btn: 'Join community', btnBg: '#22C55E', btnFg: '#fff' },
-      { icon: 'doc', iconBg: '#E9F3FE', title: 'Practice continue rakhein', desc: 'Jab tak result nahi aata, quizzes aur PYQs solve karte rahiye.', btn: 'Take a quick quiz', btnBg: '#1B8EF2', btnFg: '#fff' }
-    ],
+    suggestion: {
+      icon: 'people', iconBg: '#E3F8EC',
+      title: 'NPrep community join karein',
+      desc: 'Seniors aur fellow aspirants se connected rahiye.',
+      primary: 'Join community',
+      secondary: 'Take a quick quiz'
+    },
     quote: 'Aap dream ke kaafi kareeb hain. Bas final result ka wait hai.'
   },
   strong: {
-    badge: 'Very strong chance', icon: 'star', badgeBg: '#E9F3FE', badgeFg: '#1B6FC2',
-    dot: '#3B82F6', ink: '#1B6FC2',
+    badge: 'Very strong chance', icon: 'star', tint: '#EAF3FE', tintLine: '#BFDCFA',
+    dot: '#1B8EF2', ink: '#1B6FC2',
     headline: 'Your Nursing Officer dream is looking closer than ever. 🎉',
     msg: "You're in a very strong position. Be proud of how far you've come.",
-    example: { chance: 94, marks: '78.00', pctl: '91.3', attempted: 112 },
-    actions: [
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Next phase ke liye ready rahiye', desc: 'Counselling, document verification and joining ke liye guidance paayein.', btn: 'Join community', btnBg: '#1B8EF2', btnFg: '#fff' },
-      { icon: 'share', iconBg: '#E9F3FE', title: 'Is moment ko share karein', desc: 'Apni mehnat ko apne family ya friends ke saath share karein.', btn: 'Share prediction', btnBg: '#1B8EF2', btnFg: '#fff' }
-    ],
+    suggestion: {
+      icon: 'people', iconBg: '#E9F3FE',
+      title: 'Next phase ke liye ready rahiye',
+      desc: 'Counselling, document verification and joining ke liye guidance paayein.',
+      primary: 'Join community',
+      secondary: 'Share prediction'
+    },
     quote: "You've worked hard for this. You deserve to feel proud today."
   }
 };
 
 const $ = id => document.getElementById(id);
 
-let state = { mode: 'rw', correct: 86, wrong: 18, marks: 82, cat: 'UR', pwbd: false };
+let state = { mode: 'rw', correct: 58, wrong: 20, marks: 53, cat: 'UR', pwbd: false };
 
 function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
@@ -97,9 +104,8 @@ function renderInputs() {
   $('inpW').value = state.wrong;
   const marks = rwMarks();
   const attempted = clamp(state.correct + state.wrong, 0, EXAM.max);
-  $('marksLine').textContent = `Marks: ${marks.toFixed(2)} / ${EXAM.max}`;
-  $('unansLine').textContent = `Unanswered: ${EXAM.max - attempted} · NORCET 10 Mains · 160 questions`;
-  $('scoreBig').textContent = marks.toFixed(2);
+  $('marksVal').textContent = `${marks.toFixed(2)} / ${EXAM.max}`;
+  $('unansVal').textContent = EXAM.max - attempted;
 
   $('inpMarks').value = state.marks;
   $('rangeMarks').value = state.marks;
@@ -118,85 +124,55 @@ function computeVerdict() {
   const band = chance <= 50 ? 'low' : chance <= 70 ? 'border' : chance <= 90 ? 'good' : 'strong';
   const pctl = clamp(50 + margin * 2.25 + Math.log10(EXAM.pool) - 4.8, 1, 99);
 
-  return { marks, attempted, chance, band, pctl };
+  return { marks, attempted, chance, band, pctl, v: VERDICTS[band] };
 }
 
-// ---- build the four side-by-side prediction cards ----
-function actionsHtml(v) {
-  return v.actions.map(a => `
-    <div class="action">
-      <div class="icon" style="background:${a.iconBg};color:${v.ink}">${ICONS[a.icon]}</div>
-      <div class="atitle">${a.title}</div>
-      <div class="adesc">${a.desc}</div>
-      <span class="abtn" style="background:${a.btnBg};color:${a.btnFg}">${a.btn} →</span>
-    </div>`).join('');
-}
+function renderResult() {
+  const { marks, attempted, chance, pctl, v } = computeVerdict();
 
-function buildGrid() {
-  const grid = $('predGrid');
-  grid.innerHTML = BAND_ORDER.map(key => {
-    const v = VERDICTS[key];
-    return `
-    <div class="pcard" data-band="${key}" style="--dot:${v.dot}">
-      <span class="ribbon">✓ Your prediction</span>
-      <div class="rhead">
-        <div class="ring" data-ring style="background:conic-gradient(${v.dot} ${v.example.chance}%, #EDF0F4 ${v.example.chance}%)">
-          <div class="hole">
-            <div class="pct" data-pct style="color:${v.ink}">${v.example.chance}%</div>
-            <div class="pctlbl">chance of<br>selection</div>
-          </div>
-        </div>
-        <div style="flex:1;min-width:0">
-          <span class="badge" style="background:${v.badgeBg};color:${v.badgeFg}">${ICONS[v.icon]}<span>${v.badge}</span></span>
-          <div class="headline">${v.headline}</div>
-          <div class="subtext">${v.msg}</div>
-        </div>
-      </div>
-      <div class="stats">
-        <div class="stat"><div class="k">Your Mains Score</div><div class="v" data-score>${v.example.marks} / ${EXAM.max}</div></div>
-        <div class="stat"><div class="k">Estimated Percentile</div><div class="v" data-pctl>${v.example.pctl}%ile</div></div>
-        <div class="stat"><div class="k">Questions Attempted</div><div class="v" data-att>${v.example.attempted} / ${EXAM.max}</div></div>
-      </div>
-      <div class="actions-title">Ab aap kya kar sakte hain?</div>
-      <div class="actions">${actionsHtml(v)}</div>
-      <div class="quote">
-        <div class="qtext">
-          <span class="mark" style="color:${v.ink}">"</span>
-          <span class="qbody">${v.quote}</span>
-        </div>
-        <span class="attrib">NPrep</span>
-      </div>
-    </div>`;
-  }).join('');
-}
+  $('emptyHint').style.display = 'none';
+  $('resultBody').style.display = '';
 
-function markPrediction() {
-  const { marks, attempted, chance, band, pctl } = computeVerdict();
+  $('resultTint').style.background = v.tint;
+  $('resultTint').style.boxShadow = `inset 0 0 0 1px ${v.tintLine}`;
 
-  document.querySelectorAll('.pcard').forEach(card => {
-    const key = card.dataset.band;
-    const v = VERDICTS[key];
-    const isMatch = key === band;
-    card.classList.toggle('match', isMatch);
+  $('ring').style.background = `conic-gradient(${v.dot} ${chance}%, #EDF0F4 ${chance}%)`;
+  $('pctBig').textContent = chance + '%';
+  $('pctBig').style.color = v.ink;
 
-    if (isMatch) {
-      card.querySelector('[data-ring]').style.background = `conic-gradient(${v.dot} ${chance}%, #EDF0F4 ${chance}%)`;
-      card.querySelector('[data-pct]').textContent = chance + '%';
-      card.querySelector('[data-score]').textContent = `${marks.toFixed(2)} / ${EXAM.max}`;
-      card.querySelector('[data-pctl]').textContent = `${pctl.toFixed(1)}%ile`;
-      card.querySelector('[data-att]').textContent = `${attempted} / ${EXAM.max}`;
-    } else {
-      // restore this card's own illustrative example
-      card.querySelector('[data-ring]').style.background = `conic-gradient(${v.dot} ${v.example.chance}%, #EDF0F4 ${v.example.chance}%)`;
-      card.querySelector('[data-pct]').textContent = v.example.chance + '%';
-      card.querySelector('[data-score]').textContent = `${v.example.marks} / ${EXAM.max}`;
-      card.querySelector('[data-pctl]').textContent = `${v.example.pctl}%ile`;
-      card.querySelector('[data-att]').textContent = `${v.example.attempted} / ${EXAM.max}`;
-    }
-  });
+  $('badge').style.color = v.ink;
+  $('badge').innerHTML = ICONS[v.icon] + '<span>' + v.badge + '</span>';
+  $('headline').textContent = v.headline;
+  $('subtext').textContent = v.msg;
+  $('caption').textContent = 'Quick estimate from your details.';
+  $('caption').style.color = v.ink;
 
-  const matched = document.querySelector('.pcard.match');
-  if (matched) matched.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  $('statScore').textContent = `${marks.toFixed(2)} / ${EXAM.max}`;
+  $('statPctl').textContent = `${pctl.toFixed(1)}%ile`;
+  $('statAtt').textContent = `${attempted} / ${EXAM.max}`;
+
+  const s = v.suggestion;
+  $('suggIcon').style.background = s.iconBg;
+  $('suggIcon').style.color = v.ink;
+  $('suggIcon').innerHTML = ICONS[s.icon];
+  $('suggTitle').textContent = s.title;
+  $('suggDesc').textContent = s.desc;
+
+  const primaryBtn = $('ctaPrimary');
+  primaryBtn.textContent = '';
+  primaryBtn.style.background = v.dot;
+  primaryBtn.append(s.primary + ' ');
+  const arrow1 = document.createElement('span'); arrow1.textContent = '→'; primaryBtn.append(arrow1);
+
+  const secondaryBtn = $('ctaSecondary');
+  secondaryBtn.textContent = '';
+  secondaryBtn.append(s.secondary + ' ');
+  const arrow2 = document.createElement('span'); arrow2.textContent = '→'; secondaryBtn.append(arrow2);
+
+  $('quoteMark').style.color = v.ink;
+  $('quoteBody').textContent = v.quote;
+
+  $('resultCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 // ---- wiring ----
@@ -210,10 +186,6 @@ document.querySelectorAll('.seg button').forEach(btn => {
   });
 });
 
-$('decC').addEventListener('click', () => { state.correct = clamp(state.correct - 1, 0, EXAM.max); renderInputs(); });
-$('incC').addEventListener('click', () => { state.correct = clamp(state.correct + 1, 0, EXAM.max); renderInputs(); });
-$('decW').addEventListener('click', () => { state.wrong = clamp(state.wrong - 1, 0, EXAM.max); renderInputs(); });
-$('incW').addEventListener('click', () => { state.wrong = clamp(state.wrong + 1, 0, EXAM.max); renderInputs(); });
 $('inpC').addEventListener('input', e => { state.correct = clamp(parseInt(e.target.value) || 0, 0, EXAM.max); renderInputs(); });
 $('inpW').addEventListener('input', e => { state.wrong = clamp(parseInt(e.target.value) || 0, 0, EXAM.max); renderInputs(); });
 
@@ -230,7 +202,6 @@ document.querySelectorAll('.chip').forEach(chip => {
 
 $('pwbdCheck').addEventListener('change', e => { state.pwbd = e.target.checked; });
 
-$('predictBtn').addEventListener('click', markPrediction);
+$('predictBtn').addEventListener('click', renderResult);
 
-buildGrid();
 renderInputs();

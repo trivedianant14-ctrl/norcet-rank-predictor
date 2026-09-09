@@ -11,175 +11,166 @@
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E">
 <style>
   :root{
-    --ink:#16181D; --sub:#6C7480; --faint:#8A929E; --line:#E7EAEE; --panel:#F7F9FB;
-    --blue:#1B8EF2; --blue-dk:#1B6FC2; --page:#EEF2F7;
+    --ink:#141A33; --sub:#6C7480; --faint:#8A929E; --line:#E7EAEE; --panel:#F2F5FA;
+    --blue:#1B8EF2; --blue-dk:#1650B8; --page:#EEF2F7; --violet:#7C6CF0;
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
   body{
     font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
     background:
-      radial-gradient(900px 500px at 8% -10%, #E4EFFD 0%, transparent 60%),
+      radial-gradient(900px 500px at 8% 0%, #E4EFFD 0%, transparent 60%),
       radial-gradient(900px 500px at 100% 0%, #FDECEA 0%, transparent 55%),
       var(--page);
     color:var(--ink);
     min-height:100vh;
+    border-top:3px solid var(--ink);
   }
-  .wrap{max-width:1220px;margin:0 auto;padding:36px 20px 64px}
-  .calc-wrap{max-width:720px;margin:0 auto 36px}
-  header.top{display:flex;align-items:center;gap:12px;margin-bottom:28px}
-  .mark{
-    width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#1B8EF2,#1650B8);
-    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;
-    box-shadow:0 6px 16px rgba(27,142,242,.35); flex:none;
-  }
-  .brand-name{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
-  .brand-title{font-size:18px;font-weight:800;letter-spacing:-.01em}
+  .wrap{max-width:1180px;margin:0 auto;padding:40px 20px 70px}
 
-  h1.hero{font-size:clamp(26px,4vw,36px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px;line-height:1.15}
-  p.hero-sub{font-size:15px;color:var(--sub);margin:0 0 32px;max-width:560px;line-height:1.6}
+  .eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#3D4B70;margin-bottom:10px}
+  h1.hero{font-size:clamp(24px,3.4vw,32px);font-weight:800;letter-spacing:-.02em;margin:0 0 34px;line-height:1.2;color:var(--ink);max-width:760px}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
 
   .card{
-    background:#fff;border-radius:20px;box-shadow:0 1px 2px rgba(16,24,40,.04), inset 0 0 0 1px var(--line);
-    padding:26px;
+    background:#fff;border-radius:22px;box-shadow:0 1px 2px rgba(16,24,40,.04), inset 0 0 0 1px var(--line);
+    padding:28px;
   }
-  .card + .card{margin-top:20px}
 
-  .card-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
-
-  .seg{display:inline-flex;background:#F0F2F5;border-radius:11px;padding:3px;margin-bottom:20px}
+  /* ---- segmented toggle ---- */
+  .seg{display:flex;background:var(--panel);border-radius:999px;padding:5px;margin-bottom:22px}
   .seg button{
-    appearance:none;border:none;background:transparent;padding:9px 16px;border-radius:9px;
-    font:inherit;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;transition:.15s;
+    flex:1;appearance:none;border:none;background:transparent;padding:13px 16px;border-radius:999px;
+    font:inherit;font-size:14.5px;font-weight:700;color:var(--sub);cursor:pointer;transition:.15s;
   }
-  .seg button.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.12)}
+  .seg button.active{background:#fff;color:var(--ink);box-shadow:0 3px 10px rgba(16,24,40,.1)}
 
-  .rowfields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-  .field{border-radius:14px;padding:14px 16px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
-  .field .lbl{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
-  .field .lbl span:first-child{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#15803D}
-  .field.wrong .lbl span:first-child{color:#C2410C}
-  .field .lbl span:last-child{font-size:11px;color:var(--faint)}
-  .stepper{display:flex;align-items:center;gap:8px}
-  .stepper button{
-    width:30px;height:30px;flex:none;border-radius:9px;border:none;background:#fff;box-shadow:inset 0 0 0 1px var(--line);
-    color:var(--sub);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  /* ---- correct/wrong boxes ---- */
+  .rowfields{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+  .fieldlbl{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:9px}
+  .box{border-radius:16px;padding:16px 18px;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line)}
+  .box input{
+    width:100%;border:none;background:transparent;font:inherit;font-size:28px;font-weight:800;
+    padding:0;letter-spacing:-.01em;
   }
-  .stepper button:hover{background:#EDF1F5;color:var(--ink)}
-  .stepper input{
-    flex:1;width:100%;min-width:0;border:none;background:transparent;font:inherit;font-size:24px;
-    font-weight:700;color:var(--ink);text-align:center;padding:0;
-  }
-  .stepper input:focus{outline:none}
+  .box input:focus{outline:none}
+  .box.correct input{color:#16A34A}
+  .box.wrong input{color:#E5533D}
+  .box input::-webkit-outer-spin-button,.box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+  .box input[type=number]{-moz-appearance:textfield}
 
-  .marksbar{position:relative;height:38px;display:flex;align-items:center;margin:10px 0 4px}
+  .summary2{border-radius:16px;background:var(--panel);padding:16px 18px;display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:22px}
+  .summary2 .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:7px}
+  .summary2 .v{font-size:18px;font-weight:800;color:var(--ink)}
+
+  .marksrow{display:flex;align-items:flex-end;gap:8px;margin-bottom:10px}
+  .marksrow input[type=number]{width:120px;border:none;background:transparent;font:inherit;font-size:38px;font-weight:800;color:var(--blue);letter-spacing:-.03em;padding:0}
+  .marksrow input[type=number]:focus{outline:none}
+  .marksrow span{font-size:14px;color:var(--faint);font-weight:600;padding-bottom:7px}
+  .marksbar{position:relative;height:38px;display:flex;align-items:center;margin-bottom:6px}
   .marksbar .track{position:absolute;left:0;right:0;height:8px;border-radius:4px;background:#EDF0F4}
   .marksbar .fill{position:absolute;left:0;height:8px;border-radius:4px;background:var(--blue)}
   .marksbar .thumb{position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--blue);box-shadow:0 2px 8px rgba(27,142,242,.34);margin-left:-11px}
   .marksbar input[type=range]{position:absolute;left:-6px;right:-6px;width:calc(100% + 12px);height:38px;opacity:0;margin:0;cursor:pointer}
-  .marksrow{display:flex;align-items:flex-end;gap:8px;margin-bottom:2px}
-  .marksrow input[type=number]{width:110px;border:none;background:transparent;font:inherit;font-size:38px;font-weight:700;color:var(--blue);letter-spacing:-.03em;padding:0}
-  .marksrow input[type=number]:focus{outline:none}
-  .marksrow span{font-size:14px;color:var(--faint);font-weight:500;padding-bottom:6px}
-  .scalelbl{display:flex;justify-content:space-between;font-size:11px;color:var(--faint)}
+  .scalelbl{display:flex;justify-content:space-between;font-size:11px;color:var(--faint);margin-bottom:22px}
 
-  .summary{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:13px;background:#E9F3FE;margin-bottom:18px}
-  .summary .l1{font-size:13px;font-weight:600;color:var(--ink)}
-  .summary .l2{font-size:12px;color:var(--sub);margin-top:2px}
-  .summary .score{font-size:26px;font-weight:800;color:var(--blue);letter-spacing:-.02em}
-
-  .catlbl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
-  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .catlbl{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:12px}
+  .chips{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:22px}
   .chip{
-    appearance:none;border:none;padding:9px 15px;border-radius:10px;font:inherit;font-size:13px;font-weight:600;
-    background:#F0F2F5;color:var(--sub);cursor:pointer;transition:.15s;
+    appearance:none;width:60px;height:60px;border-radius:50%;background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);
+    font:inherit;font-size:13.5px;font-weight:700;color:var(--sub);cursor:pointer;transition:.15s;
   }
-  .chip.active{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(27,142,242,.3)}
+  .chip.active{box-shadow:inset 0 0 0 2px var(--blue);color:var(--blue)}
 
-  .pwbd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--panel);margin-bottom:22px;cursor:pointer;user-select:none}
-  .pwbd input{width:17px;height:17px;accent-color:var(--blue)}
-  .pwbd span{font-size:13px;color:var(--ink)}
-
-  .predict-btn{
-    width:100%;height:52px;border:none;border-radius:14px;background:var(--blue);color:#fff;
-    font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(27,142,242,.32);
-    transition:.15s; display:flex;align-items:center;justify-content:center;gap:8px;
+  .pwbd{
+    display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;
+    background:linear-gradient(135deg,#F1EEFE,#F6F4FF);box-shadow:inset 0 0 0 1px #E6E0FB;
   }
-  .predict-btn:hover{background:var(--blue-dk);transform:translateY(-1px)}
-  .predict-btn:active{transform:translateY(0)}
-
-  /* ---------------- Prediction showcase (side-by-side) ---------------- */
-  .pred-head{margin:8px 0 18px;text-align:center}
-  .pred-head h2{font-size:22px;font-weight:800;letter-spacing:-.015em;margin:0 0 6px}
-  .pred-head p{font-size:14px;color:var(--sub);margin:0;max-width:520px;margin-inline:auto;line-height:1.55}
-
-  .pred-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
-
-  .pcard{
-    position:relative;border-radius:20px;background:#fff;padding:24px;
-    box-shadow:0 1px 2px rgba(16,24,40,.04), inset 0 0 0 1px var(--line);
-    transition:box-shadow .25s, transform .25s;
+  .pwbd .txt{flex:1;min-width:0}
+  .pwbd .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#5B4FC4;margin-bottom:5px}
+  .pwbd .d{font-size:12.5px;line-height:1.5;color:var(--sub)}
+  .switch{position:relative;flex:none;width:46px;height:27px}
+  .switch input{opacity:0;width:0;height:0}
+  .switch .track{
+    position:absolute;inset:0;background:#D7D2F5;border-radius:999px;cursor:pointer;transition:.2s;
   }
-  .pcard[data-band="low"]{background:radial-gradient(560px 280px at 4% -6%, #FDEDEC 0%, transparent 62%), #fff}
-  .pcard[data-band="border"]{background:radial-gradient(560px 280px at 4% -6%, #FFF4E9 0%, transparent 62%), #fff}
-  .pcard[data-band="good"]{background:radial-gradient(560px 280px at 4% -6%, #EAFBF1 0%, transparent 62%), #fff}
-  .pcard[data-band="strong"]{background:radial-gradient(560px 280px at 4% -6%, #EAF3FE 0%, transparent 62%), #fff}
-
-  .pcard.match{box-shadow:0 0 0 2px var(--dot,var(--blue)), 0 12px 28px rgba(16,24,40,.1)}
-  .pcard .ribbon{
-    display:none; position:absolute; top:-11px; left:24px; padding:4px 11px; border-radius:999px;
-    background:var(--dot,var(--blue)); color:#fff; font-size:10.5px; font-weight:800;
-    letter-spacing:.04em; text-transform:uppercase; box-shadow:0 4px 10px rgba(16,24,40,.18);
+  .switch .track:before{
+    content:"";position:absolute;width:21px;height:21px;left:3px;top:3px;background:#fff;border-radius:50%;
+    transition:.2s;box-shadow:0 1px 3px rgba(16,24,40,.25);
   }
-  .pcard.match .ribbon{display:inline-flex; align-items:center; gap:5px}
+  .switch input:checked + .track{background:var(--violet)}
+  .switch input:checked + .track:before{transform:translateX(19px)}
 
-  .rhead{display:flex;gap:20px;align-items:center;margin-bottom:20px}
+  /* ---- right column: result ---- */
+  .resultbox{
+    border-radius:18px;padding:20px 22px;display:flex;gap:18px;align-items:center;
+    box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);
+  }
   .ring{
-    width:96px;height:96px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    width:84px;height:84px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    transition:background .8s cubic-bezier(.2,.8,.2,1);
   }
-  .ring .hole{width:76px;height:76px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ring .pct{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1}
-  .ring .pctlbl{font-size:9.5px;color:var(--faint);margin-top:3px;text-align:center;line-height:1.25}
+  .ring .hole{width:66px;height:66px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .pct{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .ring .pctlbl{font-size:10px;color:var(--faint);margin-top:3px}
 
-  .badge{
-    display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 9px;border-radius:999px;
-    font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
+  .badge svg{width:14px;height:14px;flex:none}
+  .headline{font-size:15px;font-weight:700;line-height:1.4;color:var(--ink);margin-bottom:3px}
+  .subtext{font-size:13px;line-height:1.5;color:#525A72}
+  .caption{font-size:11.5px;font-style:italic;margin-top:9px;font-weight:600}
+
+  .statrow{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-bottom:1px solid var(--line)}
+  .statrow:last-of-type{border-bottom:none}
+  .statrow .k{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .statrow .v{font-size:15.5px;font-weight:800;color:var(--blue)}
+  .stats-wrap{margin-top:20px}
+
+  .suggestion{margin-top:22px;padding-top:20px;border-top:1px solid var(--line)}
+  .sugg-title{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);margin-bottom:14px}
+  .sugg-body{display:flex;gap:14px;margin-bottom:16px}
+  .sugg-icon{width:38px;height:38px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .sugg-icon svg{width:19px;height:19px}
+  .sugg-text .t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:4px;line-height:1.35}
+  .sugg-text .d{font-size:12.5px;line-height:1.55;color:var(--sub)}
+  .cta-row{display:flex;gap:10px;flex-wrap:wrap}
+  .cta{
+    display:inline-flex;align-items:center;gap:6px;padding:11px 16px;border-radius:11px;font-size:13px;font-weight:700;
+    cursor:pointer;border:none;font-family:inherit;
   }
-  .badge svg{width:13px;height:13px;flex:none}
-  .headline{font-size:16.5px;font-weight:800;line-height:1.32;margin-bottom:5px;letter-spacing:-.01em}
-  .subtext{font-size:12.5px;line-height:1.5;color:var(--sub)}
+  .cta.primary{color:#fff}
+  .cta.secondary{background:#fff;box-shadow:inset 0 0 0 1.5px var(--line);color:var(--ink)}
 
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:13px;overflow:hidden;margin-bottom:15px}
-  .stat{background:var(--panel);padding:11px 13px}
-  .stat .k{font-size:10.5px;color:var(--sub);margin-bottom:3px}
-  .stat .v{font-size:14.5px;font-weight:700;color:var(--ink)}
-
-  .actions-title{font-size:14px;font-weight:700;margin:0 0 11px;letter-spacing:-.005em}
-  .actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:15px}
-  .action{border-radius:15px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:15px 15px 16px}
-  .action .icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
-  .action .icon svg{width:15px;height:15px}
-  .action .atitle{font-size:12.8px;font-weight:700;margin-bottom:4px;line-height:1.3}
-  .action .adesc{font-size:11.5px;line-height:1.5;color:var(--sub);margin-bottom:12px}
-  .action .abtn{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:9px;font-size:11.5px;font-weight:700}
-
-  .quote{border-radius:13px;background:var(--panel);padding:12px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .quote{margin-top:20px;border-radius:14px;background:var(--panel);padding:13px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
   .quote .qtext{display:flex;gap:8px;align-items:flex-start;flex:1;min-width:0}
-  .quote .mark{width:auto;height:auto;background:none;box-shadow:none;font-size:17px;font-weight:800;line-height:1;border-radius:0}
+  .quote .mark{font-size:17px;font-weight:800;line-height:1}
   .quote .qbody{font-size:11.5px;line-height:1.5;color:#4A525E}
   .quote .attrib{flex:none;font-size:10.5px;font-weight:700;color:var(--faint)}
 
+  .analyze-btn{
+    width:100%;margin-top:22px;height:58px;border:none;border-radius:16px;color:#fff;
+    background:linear-gradient(90deg,#3B9BF2,#1650B8);
+    font:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(27,142,242,.35);
+    transition:.15s; display:flex;align-items:center;justify-content:center;gap:9px;
+  }
+  .analyze-btn:hover{transform:translateY(-1px);box-shadow:0 12px 28px rgba(27,142,242,.42)}
+  .analyze-btn:active{transform:translateY(0)}
+
+  .empty-hint{display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;height:100%;padding:30px 10px;color:var(--faint)}
+  .empty-hint svg{width:34px;height:34px;margin-bottom:12px;opacity:.6}
+  .empty-hint p{font-size:13px;line-height:1.6;max-width:260px;margin:0}
+
   .disclaimer{margin-top:26px;font-size:11.5px;line-height:1.6;color:var(--faint);text-align:center}
 
-  @media (max-width:860px){
-    .pred-grid{grid-template-columns:1fr}
+  @media (max-width:820px){
+    .two-col{grid-template-columns:1fr}
   }
-  @media (max-width:600px){
+  @media (max-width:480px){
     .rowfields{grid-template-columns:1fr 1fr}
-    .rhead{flex-direction:column;align-items:flex-start}
-    .stats{grid-template-columns:1fr}
-    .actions{grid-template-columns:1fr}
-    .card,.pcard{padding:20px}
+    .chip{width:52px;height:52px;font-size:12px}
+    .card{padding:20px}
+    .resultbox{flex-direction:column;align-items:flex-start}
   }
 
   :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
@@ -189,97 +180,128 @@
 <body>
 <div class="wrap">
 
-<div class="calc-wrap">
-  <header class="top">
-    <div class="mark">N</div>
-    <div>
-      <div class="brand-name">NPrep · Prototype</div>
-      <div class="brand-title">NORCET Rank Predictor</div>
-    </div>
-  </header>
+  <div class="eyebrow">Predictor</div>
+  <h1 class="hero">See how close you are to the AIIMS Nursing Officer dream</h1>
 
-  <h1 class="hero">How likely are you to clear NORCET&nbsp;10 Mains?</h1>
-  <p class="hero-sub">Enter your Mains attempt below. We'll estimate your selection chances against your category's expected cutoff — instantly, no login needed.</p>
+  <div class="two-col">
+    <div class="card">
+      <div class="seg" role="tablist" aria-label="Entry mode">
+        <button type="button" class="active" data-mode="rw" role="tab" aria-selected="true">Right / Wrong</button>
+        <button type="button" data-mode="marks" role="tab" aria-selected="false">Direct marks</button>
+      </div>
 
-  <div class="card">
-    <div class="card-title">Your NORCET 10 Mains attempt</div>
-
-    <div class="seg" role="tablist" aria-label="Entry mode">
-      <button type="button" class="active" data-mode="rw" role="tab" aria-selected="true">Right / Wrong</button>
-      <button type="button" data-mode="marks" role="tab" aria-selected="false">Direct marks</button>
-    </div>
-
-    <div id="rwPanel">
-      <div class="rowfields">
-        <div class="field">
-          <div class="lbl"><span>Correct answers</span><span>+1</span></div>
-          <div class="stepper">
-            <button type="button" id="decC" aria-label="Decrease correct">−</button>
-            <input type="number" id="inpC" value="86" inputmode="numeric">
-            <button type="button" id="incC" aria-label="Increase correct">+</button>
+      <div id="rwPanel">
+        <div class="rowfields">
+          <div>
+            <div class="fieldlbl">Correct answers</div>
+            <div class="box correct"><input type="number" id="inpC" value="58" inputmode="numeric"></div>
+          </div>
+          <div>
+            <div class="fieldlbl">Wrong answers</div>
+            <div class="box wrong"><input type="number" id="inpW" value="20" inputmode="numeric"></div>
           </div>
         </div>
-        <div class="field wrong">
-          <div class="lbl"><span>Wrong answers</span><span>−0.25</span></div>
-          <div class="stepper">
-            <button type="button" id="decW" aria-label="Decrease wrong">−</button>
-            <input type="number" id="inpW" value="18" inputmode="numeric">
-            <button type="button" id="incW" aria-label="Increase wrong">+</button>
+        <div class="summary2">
+          <div><div class="k">Marks</div><div class="v" id="marksVal">53.00 / 160</div></div>
+          <div><div class="k">Unanswered</div><div class="v" id="unansVal">82</div></div>
+        </div>
+      </div>
+
+      <div id="marksPanel" style="display:none">
+        <div class="marksrow">
+          <input type="number" id="inpMarks" value="53" min="0" max="160" step="1">
+          <span>/ 160</span>
+        </div>
+        <div class="marksbar">
+          <div class="track"></div>
+          <div class="fill" id="fillBar"></div>
+          <div class="thumb" id="thumbDot"></div>
+          <input type="range" id="rangeMarks" min="0" max="160" step="1" value="53">
+        </div>
+        <div class="scalelbl"><span>0</span><span>160</span></div>
+      </div>
+
+      <div class="catlbl">Category</div>
+      <div class="chips" id="catChips">
+        <button type="button" class="chip active" data-cat="UR">UR</button>
+        <button type="button" class="chip" data-cat="EWS">EWS</button>
+        <button type="button" class="chip" data-cat="OBC">OBC</button>
+        <button type="button" class="chip" data-cat="SC">SC</button>
+        <button type="button" class="chip" data-cat="ST">ST</button>
+      </div>
+
+      <div class="pwbd">
+        <div class="txt">
+          <div class="k">PwBD candidate</div>
+          <div class="d">PwBD candidates can switch this on before checking their estimate.</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="pwbdCheck">
+          <span class="track"></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="card" id="resultCard">
+      <div class="empty-hint" id="emptyHint">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.6"/><path d="M12 8v5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="15.6" r="1" fill="currentColor"/></svg>
+        <p>Fill in your attempt and hit Analyze now to see your selection chance.</p>
+      </div>
+
+      <div id="resultBody" style="display:none">
+        <div class="resultbox" id="resultTint">
+          <div class="ring" id="ring">
+            <div class="hole">
+              <div class="pct" id="pctBig">—</div>
+              <div class="pctlbl">chance</div>
+            </div>
+          </div>
+          <div style="flex:1;min-width:0">
+            <span class="badge" id="badge"></span>
+            <div class="headline" id="headline"></div>
+            <div class="subtext" id="subtext"></div>
+            <div class="caption" id="caption">Quick estimate from your details.</div>
           </div>
         </div>
-      </div>
-      <div class="summary">
-        <div>
-          <div class="l1" id="marksLine">Marks: 81.50 / 160</div>
-          <div class="l2" id="unansLine">Unanswered: 56 · NORCET 10 Mains · 160 questions</div>
+
+        <div class="stats-wrap">
+          <div class="statrow"><span class="k">Your Mains Score</span><span class="v" id="statScore">—</span></div>
+          <div class="statrow"><span class="k">Estimated Percentile</span><span class="v" id="statPctl">—</span></div>
+          <div class="statrow"><span class="k">Questions Attempted</span><span class="v" id="statAtt">—</span></div>
         </div>
-        <div class="score" id="scoreBig">81.50</div>
+
+        <div class="suggestion">
+          <div class="sugg-title">Ab aap kya kar sakte hain?</div>
+          <div class="sugg-body">
+            <div class="sugg-icon" id="suggIcon"></div>
+            <div class="sugg-text">
+              <div class="t" id="suggTitle"></div>
+              <div class="d" id="suggDesc"></div>
+            </div>
+          </div>
+          <div class="cta-row">
+            <button type="button" class="cta primary" id="ctaPrimary"></button>
+            <button type="button" class="cta secondary" id="ctaSecondary"></button>
+          </div>
+        </div>
+
+        <div class="quote">
+          <div class="qtext">
+            <span class="mark" id="quoteMark">"</span>
+            <span class="qbody" id="quoteBody"></span>
+          </div>
+          <span class="attrib">NPrep</span>
+        </div>
       </div>
     </div>
-
-    <div id="marksPanel" style="display:none">
-      <div class="marksrow">
-        <input type="number" id="inpMarks" value="82" min="0" max="160" step="1">
-        <span>/ 160</span>
-      </div>
-      <div class="marksbar">
-        <div class="track"></div>
-        <div class="fill" id="fillBar"></div>
-        <div class="thumb" id="thumbDot"></div>
-        <input type="range" id="rangeMarks" min="0" max="160" step="1" value="82">
-      </div>
-      <div class="scalelbl"><span>0</span><span>160</span></div>
-    </div>
-
-    <div class="catlbl">Category</div>
-    <div class="chips" id="catChips">
-      <button type="button" class="chip active" data-cat="UR">UR</button>
-      <button type="button" class="chip" data-cat="EWS">EWS</button>
-      <button type="button" class="chip" data-cat="OBC">OBC</button>
-      <button type="button" class="chip" data-cat="SC">SC</button>
-      <button type="button" class="chip" data-cat="ST">ST</button>
-    </div>
-
-    <label class="pwbd">
-      <input type="checkbox" id="pwbdCheck">
-      <span>I'm applying under the PwBD category (cutoff relaxation applies)</span>
-    </label>
-
-    <button type="button" class="predict-btn" id="predictBtn">
-      Predict my chances
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-    </button>
   </div>
-</div>
 
-<div class="pred-head">
-  <h2>Every outcome, side by side</h2>
-  <p>The four bands your result can land in — each with its own next steps. Calculate your attempt above and we'll mark the one that matches.</p>
-</div>
+  <button type="button" class="analyze-btn" id="predictBtn">
+    Analyze now
+    <svg width="17" height="17" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+  </button>
 
-<div class="pred-grid" id="predGrid"></div>
-
-<p class="disclaimer">This is an illustrative prototype built on mock cutoff and pool-size data for demonstration only — not a real prediction. AIIMS alone declares NORCET ranks and allotments; NPrep is not affiliated with AIIMS or any examination authority.</p>
+  <p class="disclaimer">This is an illustrative prototype built on mock cutoff and pool-size data for demonstration only — not a real prediction. AIIMS alone declares NORCET ranks and allotments; NPrep is not affiliated with AIIMS or any examination authority.</p>
 
 </div>
 

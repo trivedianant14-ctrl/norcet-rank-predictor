@@ -136,60 +136,60 @@
 
   /* ---- right column: result ---- */
   .resultbox{
-    border-radius:18px;padding:20px 22px;display:flex;gap:18px;align-items:center;
+    border-radius:16px;padding:15px 17px;display:flex;gap:15px;align-items:center;
     box-shadow:inset 0 0 0 1px rgba(0,0,0,.04);
   }
   .ring{
-    width:84px;height:84px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    width:74px;height:74px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
     transition:background .8s cubic-bezier(.2,.8,.2,1);
   }
-  .ring .hole{width:66px;height:66px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ring .pct{font-size:19px;font-weight:800;letter-spacing:-.02em;line-height:1}
-  .ring .pctlbl{font-size:10px;color:var(--faint);margin-top:3px}
+  .ring .hole{width:58px;height:58px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .pct{font-size:17px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .ring .pctlbl{font-size:9.5px;color:var(--faint);margin-top:2px}
 
-  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
-  .badge svg{width:14px;height:14px;flex:none}
-  .headline{font-size:15px;font-weight:700;line-height:1.4;color:var(--ink);margin-bottom:3px}
-  .subtext{font-size:13px;line-height:1.5;color:var(--ink-body)}
-  .caption{font-size:11.5px;font-style:italic;margin-top:9px;font-weight:600}
+  .badge{display:inline-flex;align-items:center;gap:6px;font-size:11px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:5px}
+  .badge svg{width:13px;height:13px;flex:none}
+  .headline{font-size:14px;font-weight:700;line-height:1.35;color:var(--ink);margin-bottom:2px}
+  .subtext{font-size:12.5px;line-height:1.45;color:var(--ink-body)}
+  .caption{font-size:11px;font-style:italic;margin-top:6px;font-weight:600}
 
-  .statrow{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-bottom:1px solid var(--line)}
+  .statrow{display:flex;align-items:center;justify-content:space-between;padding:11px 2px;border-bottom:1px solid var(--line)}
   .statrow:last-of-type{border-bottom:none}
   .statrow .k{font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
-  .statrow .v{font-size:15.5px;font-weight:800;color:var(--blue)}
-  .stats-wrap{margin-top:20px}
+  .statrow .v{font-size:15px;font-weight:800;color:var(--blue)}
+  .stats-wrap{margin-top:14px}
 
   /* ---- primary suggestion: tinted box, icon + copy + one CTA ---- */
-  .suggestion{margin-top:20px}
+  .suggestion{margin-top:14px}
   .sugg-box{
-    border-radius:16px;padding:16px 18px;display:flex;align-items:center;gap:16px;
+    border-radius:14px;padding:12px 15px;display:flex;align-items:center;gap:13px;
   }
-  .sugg-icon{width:44px;height:44px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center}
-  .sugg-icon svg{width:21px;height:21px}
+  .sugg-icon{width:36px;height:36px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center}
+  .sugg-icon svg{width:17px;height:17px}
   .sugg-text{flex:1;min-width:0}
-  .sugg-text .t{font-size:14.5px;font-weight:700;color:var(--ink);margin-bottom:3px;line-height:1.35}
-  .sugg-text .d{font-size:12.5px;line-height:1.5;color:var(--sub)}
+  .sugg-text .t{font-size:13.5px;font-weight:700;color:var(--ink);margin-bottom:2px;line-height:1.3}
+  .sugg-text .d{font-size:12px;line-height:1.4;color:var(--sub)}
   .cta{
-    flex:none;display:inline-flex;align-items:center;gap:7px;padding:12px 18px;border-radius:11px;
-    font-size:13.5px;font-weight:700;cursor:pointer;border:none;font-family:inherit;color:#fff;
+    flex:none;display:inline-flex;align-items:center;gap:6px;padding:10px 15px;border-radius:10px;
+    font-size:13px;font-weight:700;cursor:pointer;border:none;font-family:inherit;color:#fff;
   }
 
   /* ---- other ways: neutral icon + label + arrow, one row ---- */
-  .other-ways{margin-top:18px}
-  .ow-title{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:14px}
-  .ow-row{display:flex;flex-wrap:wrap;gap:16px 20px}
+  .other-ways{margin-top:12px}
+  .ow-title{font-size:10.5px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--faint);padding-bottom:8px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .ow-row{display:flex;flex-wrap:wrap;gap:9px 18px}
   .ow-item{
-    display:inline-flex;align-items:center;gap:9px;background:none;border:none;cursor:pointer;font-family:inherit;
+    display:inline-flex;align-items:center;gap:8px;background:none;border:none;cursor:pointer;font-family:inherit;
     padding:0;color:var(--ink);
   }
-  .ow-icon{width:30px;height:30px;flex:none;border-radius:50%;background:var(--panel);color:var(--blue);display:flex;align-items:center;justify-content:center}
-  .ow-icon svg{width:14px;height:14px}
-  .ow-item .lbl{font-size:12.5px;font-weight:600;white-space:nowrap}
+  .ow-icon{width:26px;height:26px;flex:none;border-radius:50%;background:var(--panel);color:var(--blue);display:flex;align-items:center;justify-content:center}
+  .ow-icon svg{width:12px;height:12px}
+  .ow-item .lbl{font-size:12px;font-weight:600;white-space:nowrap}
   .ow-item .arrow{font-size:12px;color:var(--faint);transition:.15s}
   .ow-item:hover .lbl,.ow-item:focus-visible .lbl{color:var(--blue)}
   .ow-item:hover .arrow,.ow-item:focus-visible .arrow{color:var(--blue);transform:translateX(2px)}
 
-  .quote{margin-top:20px;border-radius:14px;background:var(--panel);padding:13px 15px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .quote{margin-top:14px;border-radius:13px;background:var(--panel);padding:10px 13px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
   .quote .qtext{display:flex;gap:8px;align-items:flex-start;flex:1;min-width:0}
   .quote .mark{font-size:17px;font-weight:800;line-height:1}
   .quote .qbody{font-size:11.5px;line-height:1.5;color:#4A525E}

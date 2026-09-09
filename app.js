@@ -18,37 +18,43 @@ const ICONS = {
   share: '<svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
 
+// Order matches the 2x2 layout in the reference design: low | border // good | strong
+const BAND_ORDER = ['low', 'border', 'good', 'strong'];
+
 const VERDICTS = {
   low: {
     badge: 'Chances are low', icon: 'shield', badgeBg: '#FCE7E6', badgeFg: '#DC2626',
     dot: '#E5533D', ink: '#B4453A',
     headline: 'This attempt may not go your way.',
     msg: "But one attempt doesn't decide your Nursing Officer dream.",
+    example: { chance: 32, marks: '42.00', pctl: '28.4', attempted: 86 },
     actions: [
-      { icon: 'book', iconBg: '#FCE7E6', title: 'Next attempt ki tayari shuru karein', desc: 'Is baar ke experience se aur strong preparation karein.', btn: 'Prepare for NORCET 11', btnBg: '#F6D3CE', btnFg: '#B4453A' },
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Mentor se baat karein', desc: 'Samjhiye kahan improvement chahiye aur kaise plan karein.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
+      { icon: 'book', iconBg: '#FCE7E6', title: 'Next attempt ki tayari shuru karein', desc: 'Is baar ka experience aapko aur strong banayega.', btn: 'Prepare for NORCET 12', btnBg: '#F6D3CE', btnFg: '#B4453A' },
+      { icon: 'people', iconBg: '#E9F3FE', title: 'Mentor se baat karein', desc: 'Apne marks ke basis par samjhiye kahan improvement chahiye.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
     ],
-    quote: 'One attempt cannot decide your Nursing Officer dream.'
+    quote: 'Bahut se Nursing Officers ka selection first attempt mein nahi hua tha.'
   },
   border: {
     badge: 'Borderline', icon: 'warning', badgeBg: '#FFF1E0', badgeFg: '#C2410C',
     dot: '#FF6B2C', ink: '#C2410C',
     headline: "You're close. It can still go either way.",
     msg: "Hope for the result, but don't stop preparing.",
+    example: { chance: 56, marks: '53.00', pctl: '56.9', attempted: 78 },
     actions: [
-      { icon: 'book', iconBg: '#FFF1E0', title: 'Preparation continue karein', desc: 'Result ka wait karte hue apni preparation mat rokiye.', btn: 'Continue preparing', btnBg: '#FF6B2C', btnFg: '#fff' },
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Apne chances samajhna chahte hain?', desc: 'Marks aur next steps ke liye mentor se baat karein.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
+      { icon: 'book', iconBg: '#FFF1E0', title: 'Preparation continue karein', desc: 'Result ka wait karte hue preparation mat rokiye.', btn: 'Continue preparing', btnBg: '#FF6B2C', btnFg: '#fff' },
+      { icon: 'people', iconBg: '#E9F3FE', title: 'Apne chances samajhna chahte hain?', desc: 'NPrep mentor se baat karke clear guidance paayein.', btn: 'Talk to a mentor', btnBg: '#1B8EF2', btnFg: '#fff' }
     ],
-    quote: 'Result ka wait kijiye. Preparation ka rhythm mat todiye.'
+    quote: 'Hope rakhiye. Lekin preparation ka rhythm mat todiye.'
   },
   good: {
     badge: 'Good chance', icon: 'trending', badgeBg: '#E3F8EC', badgeFg: '#15803D',
     dot: '#22C55E', ink: '#15803D',
     headline: 'Your chances are looking good. 🤞',
     msg: "You're in a strong position. The final result is now awaited.",
+    example: { chance: 78, marks: '67.00', pctl: '72.1', attempted: 94 },
     actions: [
-      { icon: 'people', iconBg: '#E3F8EC', title: 'NPrep community join karein', desc: 'Counselling, document verification aur joining ke liye seniors se judein.', btn: 'Join community', btnBg: '#22C55E', btnFg: '#fff' },
-      { icon: 'doc', iconBg: '#E9F3FE', title: 'Practice continue rakhein', desc: 'Jab tak result nahi aata, apni preparation sharp rakhein.', btn: 'Take a quick quiz', btnBg: '#1B8EF2', btnFg: '#fff' }
+      { icon: 'people', iconBg: '#E3F8EC', title: 'NPrep community join karein', desc: 'Seniors aur fellow aspirants se connected rahiye.', btn: 'Join community', btnBg: '#22C55E', btnFg: '#fff' },
+      { icon: 'doc', iconBg: '#E9F3FE', title: 'Practice continue rakhein', desc: 'Jab tak result nahi aata, quizzes aur PYQs solve karte rahiye.', btn: 'Take a quick quiz', btnBg: '#1B8EF2', btnFg: '#fff' }
     ],
     quote: 'Aap dream ke kaafi kareeb hain. Bas final result ka wait hai.'
   },
@@ -57,9 +63,10 @@ const VERDICTS = {
     dot: '#3B82F6', ink: '#1B6FC2',
     headline: 'Your Nursing Officer dream is looking closer than ever. 🎉',
     msg: "You're in a very strong position. Be proud of how far you've come.",
+    example: { chance: 94, marks: '78.00', pctl: '91.3', attempted: 112 },
     actions: [
-      { icon: 'people', iconBg: '#E9F3FE', title: 'Next phase ke liye ready rahiye', desc: 'Counselling aur joining process ke liye connected rahiye.', btn: 'Join community', btnBg: '#1B8EF2', btnFg: '#fff' },
-      { icon: 'share', iconBg: '#E9F3FE', title: 'Is moment ko share karein', desc: 'Apni mehnat ko celebrate karein aur family ya friends ke saath share karein.', btn: 'Share prediction', btnBg: '#1B8EF2', btnFg: '#fff' }
+      { icon: 'people', iconBg: '#E9F3FE', title: 'Next phase ke liye ready rahiye', desc: 'Counselling, document verification and joining ke liye guidance paayein.', btn: 'Join community', btnBg: '#1B8EF2', btnFg: '#fff' },
+      { icon: 'share', iconBg: '#E9F3FE', title: 'Is moment ko share karein', desc: 'Apni mehnat ko apne family ya friends ke saath share karein.', btn: 'Share prediction', btnBg: '#1B8EF2', btnFg: '#fff' }
     ],
     quote: "You've worked hard for this. You deserve to feel proud today."
   }
@@ -111,41 +118,85 @@ function computeVerdict() {
   const band = chance <= 50 ? 'low' : chance <= 70 ? 'border' : chance <= 90 ? 'good' : 'strong';
   const pctl = clamp(50 + margin * 2.25 + Math.log10(EXAM.pool) - 4.8, 1, 99);
 
-  return { marks, attempted, chance, band, pctl, v: VERDICTS[band] };
+  return { marks, attempted, chance, band, pctl };
 }
 
-function renderResult() {
-  const { marks, attempted, chance, band, pctl, v } = computeVerdict();
-
-  $('ring').style.background = `conic-gradient(${v.dot} ${chance}%, #EDF0F4 ${chance}%)`;
-  $('pctBig').textContent = chance + '%';
-  $('pctBig').style.color = v.ink;
-
-  $('badge').style.background = v.badgeBg;
-  $('badge').style.color = v.badgeFg;
-  $('badge').innerHTML = ICONS[v.icon] + '<span>' + v.badge + '</span>';
-
-  $('headline').textContent = v.headline;
-  $('subtext').textContent = v.msg;
-
-  $('statScore').textContent = `${marks.toFixed(2)} / ${EXAM.max}`;
-  $('statPctl').textContent = `${pctl.toFixed(1)}%ile`;
-  $('statAtt').textContent = `${attempted} / ${EXAM.max}`;
-
-  $('actions').innerHTML = v.actions.map(a => `
+// ---- build the four side-by-side prediction cards ----
+function actionsHtml(v) {
+  return v.actions.map(a => `
     <div class="action">
       <div class="icon" style="background:${a.iconBg};color:${v.ink}">${ICONS[a.icon]}</div>
       <div class="atitle">${a.title}</div>
       <div class="adesc">${a.desc}</div>
       <span class="abtn" style="background:${a.btnBg};color:${a.btnFg}">${a.btn} →</span>
     </div>`).join('');
+}
 
-  $('quoteMark').style.color = v.ink;
-  $('quoteBody').textContent = v.quote;
+function buildGrid() {
+  const grid = $('predGrid');
+  grid.innerHTML = BAND_ORDER.map(key => {
+    const v = VERDICTS[key];
+    return `
+    <div class="pcard" data-band="${key}" style="--dot:${v.dot}">
+      <span class="ribbon">✓ Your prediction</span>
+      <div class="rhead">
+        <div class="ring" data-ring style="background:conic-gradient(${v.dot} ${v.example.chance}%, #EDF0F4 ${v.example.chance}%)">
+          <div class="hole">
+            <div class="pct" data-pct style="color:${v.ink}">${v.example.chance}%</div>
+            <div class="pctlbl">chance of<br>selection</div>
+          </div>
+        </div>
+        <div style="flex:1;min-width:0">
+          <span class="badge" style="background:${v.badgeBg};color:${v.badgeFg}">${ICONS[v.icon]}<span>${v.badge}</span></span>
+          <div class="headline">${v.headline}</div>
+          <div class="subtext">${v.msg}</div>
+        </div>
+      </div>
+      <div class="stats">
+        <div class="stat"><div class="k">Your Mains Score</div><div class="v" data-score>${v.example.marks} / ${EXAM.max}</div></div>
+        <div class="stat"><div class="k">Estimated Percentile</div><div class="v" data-pctl>${v.example.pctl}%ile</div></div>
+        <div class="stat"><div class="k">Questions Attempted</div><div class="v" data-att>${v.example.attempted} / ${EXAM.max}</div></div>
+      </div>
+      <div class="actions-title">Ab aap kya kar sakte hain?</div>
+      <div class="actions">${actionsHtml(v)}</div>
+      <div class="quote">
+        <div class="qtext">
+          <span class="mark" style="color:${v.ink}">"</span>
+          <span class="qbody">${v.quote}</span>
+        </div>
+        <span class="attrib">NPrep</span>
+      </div>
+    </div>`;
+  }).join('');
+}
 
-  const resultCard = $('result');
-  resultCard.classList.add('show');
-  resultCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+function markPrediction() {
+  const { marks, attempted, chance, band, pctl } = computeVerdict();
+
+  document.querySelectorAll('.pcard').forEach(card => {
+    const key = card.dataset.band;
+    const v = VERDICTS[key];
+    const isMatch = key === band;
+    card.classList.toggle('match', isMatch);
+
+    if (isMatch) {
+      card.querySelector('[data-ring]').style.background = `conic-gradient(${v.dot} ${chance}%, #EDF0F4 ${chance}%)`;
+      card.querySelector('[data-pct]').textContent = chance + '%';
+      card.querySelector('[data-score]').textContent = `${marks.toFixed(2)} / ${EXAM.max}`;
+      card.querySelector('[data-pctl]').textContent = `${pctl.toFixed(1)}%ile`;
+      card.querySelector('[data-att]').textContent = `${attempted} / ${EXAM.max}`;
+    } else {
+      // restore this card's own illustrative example
+      card.querySelector('[data-ring]').style.background = `conic-gradient(${v.dot} ${v.example.chance}%, #EDF0F4 ${v.example.chance}%)`;
+      card.querySelector('[data-pct]').textContent = v.example.chance + '%';
+      card.querySelector('[data-score]').textContent = `${v.example.marks} / ${EXAM.max}`;
+      card.querySelector('[data-pctl]').textContent = `${v.example.pctl}%ile`;
+      card.querySelector('[data-att]').textContent = `${v.example.attempted} / ${EXAM.max}`;
+    }
+  });
+
+  const matched = document.querySelector('.pcard.match');
+  if (matched) matched.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 // ---- wiring ----
@@ -179,6 +230,7 @@ document.querySelectorAll('.chip').forEach(chip => {
 
 $('pwbdCheck').addEventListener('change', e => { state.pwbd = e.target.checked; });
 
-$('predictBtn').addEventListener('click', renderResult);
+$('predictBtn').addEventListener('click', markPrediction);
 
+buildGrid();
 renderInputs();

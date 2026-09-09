@@ -25,7 +25,8 @@
     color:var(--ink);
     min-height:100vh;
   }
-  .wrap{max-width:960px;margin:0 auto;padding:36px 20px 64px}
+  .wrap{max-width:1220px;margin:0 auto;padding:36px 20px 64px}
+  .calc-wrap{max-width:720px;margin:0 auto 36px}
   header.top{display:flex;align-items:center;gap:12px;margin-bottom:28px}
   .mark{
     width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#1B8EF2,#1650B8);
@@ -107,56 +108,78 @@
   .predict-btn:hover{background:var(--blue-dk);transform:translateY(-1px)}
   .predict-btn:active{transform:translateY(0)}
 
-  /* ---------------- Result card ---------------- */
-  #result{display:none}
-  #result.show{display:block; animation:rise .4s cubic-bezier(.2,.8,.2,1) both}
-  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+  /* ---------------- Prediction showcase (side-by-side) ---------------- */
+  .pred-head{margin:8px 0 18px;text-align:center}
+  .pred-head h2{font-size:22px;font-weight:800;letter-spacing:-.015em;margin:0 0 6px}
+  .pred-head p{font-size:14px;color:var(--sub);margin:0;max-width:520px;margin-inline:auto;line-height:1.55}
+
+  .pred-grid{display:grid;grid-template-columns:1fr 1fr;gap:22px}
+
+  .pcard{
+    position:relative;border-radius:20px;background:#fff;padding:24px;
+    box-shadow:0 1px 2px rgba(16,24,40,.04), inset 0 0 0 1px var(--line);
+    transition:box-shadow .25s, transform .25s;
+  }
+  .pcard[data-band="low"]{background:radial-gradient(560px 280px at 4% -6%, #FDEDEC 0%, transparent 62%), #fff}
+  .pcard[data-band="border"]{background:radial-gradient(560px 280px at 4% -6%, #FFF4E9 0%, transparent 62%), #fff}
+  .pcard[data-band="good"]{background:radial-gradient(560px 280px at 4% -6%, #EAFBF1 0%, transparent 62%), #fff}
+  .pcard[data-band="strong"]{background:radial-gradient(560px 280px at 4% -6%, #EAF3FE 0%, transparent 62%), #fff}
+
+  .pcard.match{box-shadow:0 0 0 2px var(--dot,var(--blue)), 0 12px 28px rgba(16,24,40,.1)}
+  .pcard .ribbon{
+    display:none; position:absolute; top:-11px; left:24px; padding:4px 11px; border-radius:999px;
+    background:var(--dot,var(--blue)); color:#fff; font-size:10.5px; font-weight:800;
+    letter-spacing:.04em; text-transform:uppercase; box-shadow:0 4px 10px rgba(16,24,40,.18);
+  }
+  .pcard.match .ribbon{display:inline-flex; align-items:center; gap:5px}
 
   .rhead{display:flex;gap:20px;align-items:center;margin-bottom:20px}
   .ring{
-    width:112px;height:112px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
-    transition:background 1s cubic-bezier(.2,.8,.2,1);
+    width:96px;height:96px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
   }
-  .ring .hole{width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
-  .ring .pct{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1}
-  .ring .pctlbl{font-size:10.5px;color:var(--faint);margin-top:4px;text-align:center;line-height:1.3}
+  .ring .hole{width:76px;height:76px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .pct{font-size:22px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .ring .pctlbl{font-size:9.5px;color:var(--faint);margin-top:3px;text-align:center;line-height:1.25}
 
   .badge{
     display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 9px;border-radius:999px;
     font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;
   }
   .badge svg{width:13px;height:13px;flex:none}
-  .headline{font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px;letter-spacing:-.01em}
-  .subtext{font-size:13.5px;line-height:1.55;color:var(--sub)}
+  .headline{font-size:16.5px;font-weight:800;line-height:1.32;margin-bottom:5px;letter-spacing:-.01em}
+  .subtext{font-size:12.5px;line-height:1.5;color:var(--sub)}
 
-  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px}
-  .stat{background:var(--panel);padding:13px 16px}
-  .stat .k{font-size:11.5px;color:var(--sub);margin-bottom:4px}
-  .stat .v{font-size:16px;font-weight:700;color:var(--ink)}
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:13px;overflow:hidden;margin-bottom:15px}
+  .stat{background:var(--panel);padding:11px 13px}
+  .stat .k{font-size:10.5px;color:var(--sub);margin-bottom:3px}
+  .stat .v{font-size:14.5px;font-weight:700;color:var(--ink)}
 
-  .actions-title{font-size:14.5px;font-weight:700;margin:0 0 12px;letter-spacing:-.005em}
-  .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
-  .action{border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:18px 18px 18px}
-  .action .icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
-  .action .icon svg{width:17px;height:17px}
-  .action .atitle{font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35}
-  .action .adesc{font-size:12.5px;line-height:1.55;color:var(--sub);margin-bottom:14px}
-  .action .abtn{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:10px;font-size:12.5px;font-weight:700}
+  .actions-title{font-size:14px;font-weight:700;margin:0 0 11px;letter-spacing:-.005em}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:11px;margin-bottom:15px}
+  .action{border-radius:15px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:15px 15px 16px}
+  .action .icon{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:10px}
+  .action .icon svg{width:15px;height:15px}
+  .action .atitle{font-size:12.8px;font-weight:700;margin-bottom:4px;line-height:1.3}
+  .action .adesc{font-size:11.5px;line-height:1.5;color:var(--sub);margin-bottom:12px}
+  .action .abtn{display:inline-flex;align-items:center;gap:5px;padding:8px 11px;border-radius:9px;font-size:11.5px;font-weight:700}
 
-  .quote{border-radius:14px;background:var(--panel);padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
-  .quote .qtext{display:flex;gap:9px;align-items:flex-start;flex:1;min-width:0}
-  .quote .mark{width:auto;height:auto;background:none;box-shadow:none;font-size:19px;font-weight:800;line-height:1;border-radius:0}
-  .quote .qbody{font-size:12.5px;line-height:1.55;color:#4A525E}
-  .quote .attrib{flex:none;font-size:11px;font-weight:700;color:var(--faint)}
+  .quote{border-radius:13px;background:var(--panel);padding:12px 14px;display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .quote .qtext{display:flex;gap:8px;align-items:flex-start;flex:1;min-width:0}
+  .quote .mark{width:auto;height:auto;background:none;box-shadow:none;font-size:17px;font-weight:800;line-height:1;border-radius:0}
+  .quote .qbody{font-size:11.5px;line-height:1.5;color:#4A525E}
+  .quote .attrib{flex:none;font-size:10.5px;font-weight:700;color:var(--faint)}
 
-  .disclaimer{margin-top:22px;font-size:11.5px;line-height:1.6;color:var(--faint);text-align:center}
+  .disclaimer{margin-top:26px;font-size:11.5px;line-height:1.6;color:var(--faint);text-align:center}
 
+  @media (max-width:860px){
+    .pred-grid{grid-template-columns:1fr}
+  }
   @media (max-width:600px){
     .rowfields{grid-template-columns:1fr 1fr}
     .rhead{flex-direction:column;align-items:flex-start}
     .stats{grid-template-columns:1fr}
     .actions{grid-template-columns:1fr}
-    .card{padding:20px}
+    .card,.pcard{padding:20px}
   }
 
   :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
@@ -166,6 +189,7 @@
 <body>
 <div class="wrap">
 
+<div class="calc-wrap">
   <header class="top">
     <div class="mark">N</div>
     <div>
@@ -246,41 +270,16 @@
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
     </button>
   </div>
+</div>
 
-  <div class="card" id="result">
-    <div class="rhead">
-      <div class="ring" id="ring">
-        <div class="hole">
-          <div class="pct" id="pctBig">—</div>
-          <div class="pctlbl">chance of<br>selection</div>
-        </div>
-      </div>
-      <div style="flex:1;min-width:0">
-        <span class="badge" id="badge"></span>
-        <div class="headline" id="headline"></div>
-        <div class="subtext" id="subtext"></div>
-      </div>
-    </div>
+<div class="pred-head">
+  <h2>Every outcome, side by side</h2>
+  <p>The four bands your result can land in — each with its own next steps. Calculate your attempt above and we'll mark the one that matches.</p>
+</div>
 
-    <div class="stats">
-      <div class="stat"><div class="k">Your Mains Score</div><div class="v" id="statScore">—</div></div>
-      <div class="stat"><div class="k">Estimated Percentile</div><div class="v" id="statPctl">—</div></div>
-      <div class="stat"><div class="k">Questions Attempted</div><div class="v" id="statAtt">—</div></div>
-    </div>
+<div class="pred-grid" id="predGrid"></div>
 
-    <div class="actions-title">Ab aap kya kar sakte hain?</div>
-    <div class="actions" id="actions"></div>
-
-    <div class="quote">
-      <div class="qtext">
-        <span class="mark" id="quoteMark">"</span>
-        <span class="qbody" id="quoteBody"></span>
-      </div>
-      <span class="attrib">NPrep</span>
-    </div>
-  </div>
-
-  <p class="disclaimer">This is an illustrative prototype built on mock cutoff and pool-size data for demonstration only — not a real prediction. AIIMS alone declares NORCET ranks and allotments; NPrep is not affiliated with AIIMS or any examination authority.</p>
+<p class="disclaimer">This is an illustrative prototype built on mock cutoff and pool-size data for demonstration only — not a real prediction. AIIMS alone declares NORCET ranks and allotments; NPrep is not affiliated with AIIMS or any examination authority.</p>
 
 </div>
 

@@ -15,11 +15,13 @@ const ICONS = {
   book: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5C4 4.7 4.7 4 5.5 4H11v16H5.5A1.5 1.5 0 014 18.5v-13z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M20 5.5c0-.8-.7-1.5-1.5-1.5H13v16h5.5a1.5 1.5 0 001.5-1.5v-13z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/></svg>',
   people: '<svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="8" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M15.5 14.2c2.6.5 4.5 2.8 4.5 5.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   doc: '<svg viewBox="0 0 24 24" fill="none"><path d="M6 3.5h9l3 3V20a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-16a.5.5 0 01.5-.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-  share: '<svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+  share: '<svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  chat: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16a1 1 0 011 1V15a1 1 0 01-1 1H9l-4.5 4V16H4a1 1 0 01-1-1V6.5a1 1 0 011-1z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
 
-// Each band now carries exactly one suggestion, with a primary and a
-// secondary call to action (instead of two separate suggestion cards).
+// Each band carries exactly one suggestion. Only its `primary` action gets
+// a full text CTA; `secondary` collapses to an icon-only button (alongside
+// the universal "talk to a counsellor" icon) so one CTA keeps priority.
 const VERDICTS = {
   low: {
     badge: 'Chances are low', icon: 'shield', tint: '#FDEEEC', tintLine: '#F6D3CE',
@@ -31,7 +33,7 @@ const VERDICTS = {
       title: 'Next attempt ki tayari shuru karein',
       desc: 'Is baar ka experience aapko aur strong banayega.',
       primary: 'Prepare for NORCET 12',
-      secondary: 'Talk to a mentor'
+      secondary: 'Talk to a mentor', secondaryIcon: 'people'
     },
     quote: 'Bahut se Nursing Officers ka selection first attempt mein nahi hua tha.'
   },
@@ -45,7 +47,7 @@ const VERDICTS = {
       title: 'Preparation continue karein',
       desc: 'Result ka wait karte hue preparation mat rokiye.',
       primary: 'Continue preparing',
-      secondary: 'Talk to a mentor'
+      secondary: 'Talk to a mentor', secondaryIcon: 'people'
     },
     quote: 'Hope rakhiye. Lekin preparation ka rhythm mat todiye.'
   },
@@ -59,7 +61,7 @@ const VERDICTS = {
       title: 'NPrep community join karein',
       desc: 'Seniors aur fellow aspirants se connected rahiye.',
       primary: 'Join community',
-      secondary: 'Take a quick quiz'
+      secondary: 'Take a quick quiz', secondaryIcon: 'doc'
     },
     quote: 'Aap dream ke kaafi kareeb hain. Bas final result ka wait hai.'
   },
@@ -73,7 +75,7 @@ const VERDICTS = {
       title: 'Next phase ke liye ready rahiye',
       desc: 'Counselling, document verification and joining ke liye guidance paayein.',
       primary: 'Join community',
-      secondary: 'Share prediction'
+      secondary: 'Share prediction', secondaryIcon: 'share'
     },
     quote: "You've worked hard for this. You deserve to feel proud today."
   }
@@ -164,10 +166,15 @@ function renderResult() {
   primaryBtn.append(s.primary + ' ');
   const arrow1 = document.createElement('span'); arrow1.textContent = '→'; primaryBtn.append(arrow1);
 
-  const secondaryBtn = $('ctaSecondary');
-  secondaryBtn.textContent = '';
-  secondaryBtn.append(s.secondary + ' ');
-  const arrow2 = document.createElement('span'); arrow2.textContent = '→'; secondaryBtn.append(arrow2);
+  // secondary + a universal "talk to a counsellor" option ride along as
+  // icon-only buttons so the primary CTA keeps the visual priority.
+  const iconActions = [
+    { icon: s.secondaryIcon, label: s.secondary },
+    { icon: 'chat', label: 'Talk to a counsellor' }
+  ];
+  $('iconCtas').innerHTML = iconActions.map(a => `
+    <button type="button" class="icon-cta" data-label="${a.label}" aria-label="${a.label}">${ICONS[a.icon]}</button>
+  `).join('');
 
   $('quoteMark').style.color = v.ink;
   $('quoteBody').textContent = v.quote;

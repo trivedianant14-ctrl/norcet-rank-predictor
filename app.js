@@ -16,67 +16,88 @@ const ICONS = {
   people: '<svg viewBox="0 0 24 24" fill="none"><circle cx="9" cy="8" r="3" stroke="currentColor" stroke-width="2"/><path d="M3 20c0-3.3 2.7-6 6-6s6 2.7 6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/><circle cx="17" cy="8" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M15.5 14.2c2.6.5 4.5 2.8 4.5 5.8" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   doc: '<svg viewBox="0 0 24 24" fill="none"><path d="M6 3.5h9l3 3V20a.5.5 0 01-.5.5h-11a.5.5 0 01-.5-.5v-16a.5.5 0 01.5-.5z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M9 12h6M9 15.5h6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
   share: '<svg viewBox="0 0 24 24" fill="none"><circle cx="18" cy="5" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="6" cy="12" r="2.4" stroke="currentColor" stroke-width="2"/><circle cx="18" cy="19" r="2.4" stroke="currentColor" stroke-width="2"/><path d="M8.2 10.7l7.6-4.4M8.2 13.3l7.6 4.4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
-  chat: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16a1 1 0 011 1V15a1 1 0 01-1 1H9l-4.5 4V16H4a1 1 0 01-1-1V6.5a1 1 0 011-1z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
+  chat: '<svg viewBox="0 0 24 24" fill="none"><path d="M4 5.5h16a1 1 0 011 1V15a1 1 0 01-1 1H9l-4.5 4V16H4a1 1 0 01-1-1V6.5a1 1 0 011-1z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/><path d="M8 10h8M8 13h5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  search: '<svg viewBox="0 0 24 24" fill="none"><circle cx="10.5" cy="10.5" r="6" stroke="currentColor" stroke-width="2"/><path d="M20 20l-4.6-4.6" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>',
+  person: '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="8" r="3.6" stroke="currentColor" stroke-width="2"/><path d="M4.5 20c0-4.1 3.4-7.5 7.5-7.5s7.5 3.4 7.5 7.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>'
 };
 
-// Each band carries exactly one suggestion. Only its `primary` action gets
-// a full text CTA; `secondary` collapses to an icon-only button (alongside
-// the universal "talk to a counsellor" icon) so one CTA keeps priority.
+// Each band carries exactly one primary suggestion (icon + copy + one CTA)
+// plus a fixed set of three "other ways" links, per the approved design.
 const VERDICTS = {
   low: {
     badge: 'Chances are low', icon: 'shield', tint: '#FDEEEC', tintLine: '#F6D3CE',
     dot: '#E5533D', ink: '#B4453A',
     headline: 'This attempt may not go your way.',
-    msg: "But one attempt doesn't decide your Nursing Officer dream.",
+    msg: "Your current score is below the expected selection range. But one attempt doesn't decide your Nursing Officer dream.",
     suggestion: {
       icon: 'book', iconBg: '#FCE7E6',
-      title: 'Next attempt ki tayari shuru karein',
-      desc: 'Is baar ka experience aapko aur strong banayega.',
-      primary: 'Prepare for NORCET 12',
-      secondary: 'Talk to a mentor', secondaryIcon: 'people'
+      title: 'Start preparing for NORCET 12',
+      desc: 'Turn this experience into a stronger next attempt.',
+      cta: 'Prepare Now'
     },
+    otherWaysLabel: 'Other ways we can help',
+    otherWays: [
+      { icon: 'search', label: 'Talk to a mentor' },
+      { icon: 'doc', label: 'Analyse your performance' },
+      { icon: 'people', label: 'Read topper journeys' }
+    ],
     quote: 'Bahut se Nursing Officers ka selection first attempt mein nahi hua tha.'
   },
   border: {
     badge: 'Borderline', icon: 'warning', tint: '#FFF7E4', tintLine: '#F5DFA6',
     dot: '#D98324', ink: '#B4630F',
     headline: "You're close. It can still go either way.",
-    msg: "Hope for the result, but don't stop preparing.",
+    msg: "Your score is around the expected cutoff. Hope for the result, but don't stop preparing.",
     suggestion: {
       icon: 'book', iconBg: '#FFF1E0',
-      title: 'Preparation continue karein',
-      desc: 'Result ka wait karte hue preparation mat rokiye.',
-      primary: 'Continue preparing',
-      secondary: 'Talk to a mentor', secondaryIcon: 'people'
+      title: 'Keep preparing while you wait',
+      desc: 'Be ready, no matter what the result is.',
+      cta: 'Continue Preparing'
     },
+    otherWaysLabel: 'Other ways we can help',
+    otherWays: [
+      { icon: 'person', label: 'Talk to a mentor' },
+      { icon: 'search', label: 'Check expected cutoff' },
+      { icon: 'people', label: 'Read what other aspirants are doing' }
+    ],
     quote: 'Hope rakhiye. Lekin preparation ka rhythm mat todiye.'
   },
   good: {
     badge: 'Good chance', icon: 'trending', tint: '#EAFBF1', tintLine: '#BFEDD3',
     dot: '#22C55E', ink: '#15803D',
     headline: 'Your chances are looking good. 🤞',
-    msg: "You're in a strong position. The final result is now awaited.",
+    msg: "Your score puts you in a strong position. The final result is now awaited.",
     suggestion: {
       icon: 'people', iconBg: '#E3F8EC',
-      title: 'NPrep community join karein',
-      desc: 'Seniors aur fellow aspirants se connected rahiye.',
-      primary: 'Join community',
-      secondary: 'Take a quick quiz', secondaryIcon: 'doc'
+      title: 'Join the NPrep community',
+      desc: 'Stay connected for counselling, document verification and everything after the result.',
+      cta: 'Join Now'
     },
+    otherWaysLabel: 'Other ways to stay prepared',
+    otherWays: [
+      { icon: 'doc', label: 'Take a quick quiz' },
+      { icon: 'book', label: 'Revise important topics' },
+      { icon: 'chat', label: 'Connect with seniors' }
+    ],
     quote: 'Aap dream ke kaafi kareeb hain. Bas final result ka wait hai.'
   },
   strong: {
     badge: 'Very strong chance', icon: 'star', tint: '#EAF3FE', tintLine: '#BFDCFA',
     dot: '#1B8EF2', ink: '#1B6FC2',
     headline: 'Your Nursing Officer dream is looking closer than ever. 🎉',
-    msg: "You're in a very strong position. Be proud of how far you've come.",
+    msg: "You're in a very strong position based on your score. Be proud of how far you've come.",
     suggestion: {
       icon: 'people', iconBg: '#E9F3FE',
-      title: 'Next phase ke liye ready rahiye',
-      desc: 'Counselling, document verification and joining ke liye guidance paayein.',
-      primary: 'Join community',
-      secondary: 'Share prediction', secondaryIcon: 'share'
+      title: 'Get ready for the next phase',
+      desc: 'Stay connected for counselling, joining process and important updates.',
+      cta: 'Join Community'
     },
+    otherWaysLabel: 'Other ways to make the most of this',
+    otherWays: [
+      { icon: 'doc', label: 'Solve NORCET 11 PYQs' },
+      { icon: 'chat', label: 'Talk to a mentor' },
+      { icon: 'share', label: 'Share your result' }
+    ],
     quote: "You've worked hard for this. You deserve to feel proud today."
   }
 };
@@ -154,6 +175,7 @@ function renderResult() {
   $('statAtt').textContent = `${attempted} / ${EXAM.max}`;
 
   const s = v.suggestion;
+  $('suggBox').style.background = v.tint;
   $('suggIcon').style.background = s.iconBg;
   $('suggIcon').style.color = v.ink;
   $('suggIcon').innerHTML = ICONS[s.icon];
@@ -163,17 +185,16 @@ function renderResult() {
   const primaryBtn = $('ctaPrimary');
   primaryBtn.textContent = '';
   primaryBtn.style.background = v.dot;
-  primaryBtn.append(s.primary + ' ');
+  primaryBtn.append(s.cta + ' ');
   const arrow1 = document.createElement('span'); arrow1.textContent = '→'; primaryBtn.append(arrow1);
 
-  // secondary + a universal "talk to a counsellor" option ride along as
-  // icon-only buttons so the primary CTA keeps the visual priority.
-  const iconActions = [
-    { icon: s.secondaryIcon, label: s.secondary },
-    { icon: 'chat', label: 'Talk to a counsellor' }
-  ];
-  $('iconCtas').innerHTML = iconActions.map(a => `
-    <button type="button" class="icon-cta" data-label="${a.label}" aria-label="${a.label}">${ICONS[a.icon]}</button>
+  $('owTitle').textContent = v.otherWaysLabel;
+  $('owRow').innerHTML = v.otherWays.map(a => `
+    <button type="button" class="ow-item">
+      <span class="ow-icon">${ICONS[a.icon]}</span>
+      <span class="lbl">${a.label}</span>
+      <span class="arrow">→</span>
+    </button>
   `).join('');
 
   $('quoteMark').style.color = v.ink;

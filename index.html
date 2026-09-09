@@ -1,0 +1,289 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>NORCET Rank Predictor</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Estimate your AIIMS NORCET Mains selection chances from your score.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E">
+<style>
+  :root{
+    --ink:#16181D; --sub:#6C7480; --faint:#8A929E; --line:#E7EAEE; --panel:#F7F9FB;
+    --blue:#1B8EF2; --blue-dk:#1B6FC2; --page:#EEF2F7;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{
+    font-family:'Inter',system-ui,-apple-system,Segoe UI,Roboto,sans-serif;
+    background:
+      radial-gradient(900px 500px at 8% -10%, #E4EFFD 0%, transparent 60%),
+      radial-gradient(900px 500px at 100% 0%, #FDECEA 0%, transparent 55%),
+      var(--page);
+    color:var(--ink);
+    min-height:100vh;
+  }
+  .wrap{max-width:960px;margin:0 auto;padding:36px 20px 64px}
+  header.top{display:flex;align-items:center;gap:12px;margin-bottom:28px}
+  .mark{
+    width:40px;height:40px;border-radius:12px;background:linear-gradient(135deg,#1B8EF2,#1650B8);
+    display:flex;align-items:center;justify-content:center;color:#fff;font-weight:800;font-size:15px;
+    box-shadow:0 6px 16px rgba(27,142,242,.35); flex:none;
+  }
+  .brand-name{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--faint)}
+  .brand-title{font-size:18px;font-weight:800;letter-spacing:-.01em}
+
+  h1.hero{font-size:clamp(26px,4vw,36px);font-weight:800;letter-spacing:-.02em;margin:0 0 8px;line-height:1.15}
+  p.hero-sub{font-size:15px;color:var(--sub);margin:0 0 32px;max-width:560px;line-height:1.6}
+
+  .card{
+    background:#fff;border-radius:20px;box-shadow:0 1px 2px rgba(16,24,40,.04), inset 0 0 0 1px var(--line);
+    padding:26px;
+  }
+  .card + .card{margin-top:20px}
+
+  .card-title{font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--faint);margin-bottom:16px}
+
+  .seg{display:inline-flex;background:#F0F2F5;border-radius:11px;padding:3px;margin-bottom:20px}
+  .seg button{
+    appearance:none;border:none;background:transparent;padding:9px 16px;border-radius:9px;
+    font:inherit;font-size:13px;font-weight:600;color:var(--sub);cursor:pointer;transition:.15s;
+  }
+  .seg button.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(16,24,40,.12)}
+
+  .rowfields{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .field{border-radius:14px;padding:14px 16px;background:var(--panel);box-shadow:inset 0 0 0 1px var(--line)}
+  .field .lbl{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
+  .field .lbl span:first-child{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#15803D}
+  .field.wrong .lbl span:first-child{color:#C2410C}
+  .field .lbl span:last-child{font-size:11px;color:var(--faint)}
+  .stepper{display:flex;align-items:center;gap:8px}
+  .stepper button{
+    width:30px;height:30px;flex:none;border-radius:9px;border:none;background:#fff;box-shadow:inset 0 0 0 1px var(--line);
+    color:var(--sub);font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center;
+  }
+  .stepper button:hover{background:#EDF1F5;color:var(--ink)}
+  .stepper input{
+    flex:1;width:100%;min-width:0;border:none;background:transparent;font:inherit;font-size:24px;
+    font-weight:700;color:var(--ink);text-align:center;padding:0;
+  }
+  .stepper input:focus{outline:none}
+
+  .marksbar{position:relative;height:38px;display:flex;align-items:center;margin:10px 0 4px}
+  .marksbar .track{position:absolute;left:0;right:0;height:8px;border-radius:4px;background:#EDF0F4}
+  .marksbar .fill{position:absolute;left:0;height:8px;border-radius:4px;background:var(--blue)}
+  .marksbar .thumb{position:absolute;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--blue);box-shadow:0 2px 8px rgba(27,142,242,.34);margin-left:-11px}
+  .marksbar input[type=range]{position:absolute;left:-6px;right:-6px;width:calc(100% + 12px);height:38px;opacity:0;margin:0;cursor:pointer}
+  .marksrow{display:flex;align-items:flex-end;gap:8px;margin-bottom:2px}
+  .marksrow input[type=number]{width:110px;border:none;background:transparent;font:inherit;font-size:38px;font-weight:700;color:var(--blue);letter-spacing:-.03em;padding:0}
+  .marksrow input[type=number]:focus{outline:none}
+  .marksrow span{font-size:14px;color:var(--faint);font-weight:500;padding-bottom:6px}
+  .scalelbl{display:flex;justify-content:space-between;font-size:11px;color:var(--faint)}
+
+  .summary{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;border-radius:13px;background:#E9F3FE;margin-bottom:18px}
+  .summary .l1{font-size:13px;font-weight:600;color:var(--ink)}
+  .summary .l2{font-size:12px;color:var(--sub);margin-top:2px}
+  .summary .score{font-size:26px;font-weight:800;color:var(--blue);letter-spacing:-.02em}
+
+  .catlbl{font-size:12px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--faint);margin-bottom:10px}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+  .chip{
+    appearance:none;border:none;padding:9px 15px;border-radius:10px;font:inherit;font-size:13px;font-weight:600;
+    background:#F0F2F5;color:var(--sub);cursor:pointer;transition:.15s;
+  }
+  .chip.active{background:var(--blue);color:#fff;box-shadow:0 4px 12px rgba(27,142,242,.3)}
+
+  .pwbd{display:flex;align-items:center;gap:10px;padding:12px 14px;border-radius:12px;background:var(--panel);margin-bottom:22px;cursor:pointer;user-select:none}
+  .pwbd input{width:17px;height:17px;accent-color:var(--blue)}
+  .pwbd span{font-size:13px;color:var(--ink)}
+
+  .predict-btn{
+    width:100%;height:52px;border:none;border-radius:14px;background:var(--blue);color:#fff;
+    font:inherit;font-size:15px;font-weight:700;cursor:pointer;box-shadow:0 8px 20px rgba(27,142,242,.32);
+    transition:.15s; display:flex;align-items:center;justify-content:center;gap:8px;
+  }
+  .predict-btn:hover{background:var(--blue-dk);transform:translateY(-1px)}
+  .predict-btn:active{transform:translateY(0)}
+
+  /* ---------------- Result card ---------------- */
+  #result{display:none}
+  #result.show{display:block; animation:rise .4s cubic-bezier(.2,.8,.2,1) both}
+  @keyframes rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  .rhead{display:flex;gap:20px;align-items:center;margin-bottom:20px}
+  .ring{
+    width:112px;height:112px;flex:none;border-radius:50%;display:flex;align-items:center;justify-content:center;
+    transition:background 1s cubic-bezier(.2,.8,.2,1);
+  }
+  .ring .hole{width:88px;height:88px;border-radius:50%;background:#fff;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .ring .pct{font-size:27px;font-weight:800;letter-spacing:-.02em;line-height:1}
+  .ring .pctlbl{font-size:10.5px;color:var(--faint);margin-top:4px;text-align:center;line-height:1.3}
+
+  .badge{
+    display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 9px;border-radius:999px;
+    font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;margin-bottom:9px;
+  }
+  .badge svg{width:13px;height:13px;flex:none}
+  .headline{font-size:19px;font-weight:800;line-height:1.3;margin-bottom:6px;letter-spacing:-.01em}
+  .subtext{font-size:13.5px;line-height:1.55;color:var(--sub)}
+
+  .stats{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:14px;overflow:hidden;margin-bottom:16px}
+  .stat{background:var(--panel);padding:13px 16px}
+  .stat .k{font-size:11.5px;color:var(--sub);margin-bottom:4px}
+  .stat .v{font-size:16px;font-weight:700;color:var(--ink)}
+
+  .actions-title{font-size:14.5px;font-weight:700;margin:0 0 12px;letter-spacing:-.005em}
+  .actions{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px}
+  .action{border-radius:16px;background:#fff;box-shadow:inset 0 0 0 1px var(--line);padding:18px 18px 18px}
+  .action .icon{width:34px;height:34px;border-radius:50%;display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .action .icon svg{width:17px;height:17px}
+  .action .atitle{font-size:14px;font-weight:700;margin-bottom:5px;line-height:1.35}
+  .action .adesc{font-size:12.5px;line-height:1.55;color:var(--sub);margin-bottom:14px}
+  .action .abtn{display:inline-flex;align-items:center;gap:6px;padding:9px 13px;border-radius:10px;font-size:12.5px;font-weight:700}
+
+  .quote{border-radius:14px;background:var(--panel);padding:14px 16px;display:flex;align-items:flex-start;justify-content:space-between;gap:12px}
+  .quote .qtext{display:flex;gap:9px;align-items:flex-start;flex:1;min-width:0}
+  .quote .mark{width:auto;height:auto;background:none;box-shadow:none;font-size:19px;font-weight:800;line-height:1;border-radius:0}
+  .quote .qbody{font-size:12.5px;line-height:1.55;color:#4A525E}
+  .quote .attrib{flex:none;font-size:11px;font-weight:700;color:var(--faint)}
+
+  .disclaimer{margin-top:22px;font-size:11.5px;line-height:1.6;color:var(--faint);text-align:center}
+
+  @media (max-width:600px){
+    .rowfields{grid-template-columns:1fr 1fr}
+    .rhead{flex-direction:column;align-items:flex-start}
+    .stats{grid-template-columns:1fr}
+    .actions{grid-template-columns:1fr}
+    .card{padding:20px}
+  }
+
+  :focus-visible{outline:2px solid var(--blue);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){ *{animation-duration:.001ms !important; transition-duration:.001ms !important} }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header class="top">
+    <div class="mark">N</div>
+    <div>
+      <div class="brand-name">NPrep · Prototype</div>
+      <div class="brand-title">NORCET Rank Predictor</div>
+    </div>
+  </header>
+
+  <h1 class="hero">How likely are you to clear NORCET&nbsp;10 Mains?</h1>
+  <p class="hero-sub">Enter your Mains attempt below. We'll estimate your selection chances against your category's expected cutoff — instantly, no login needed.</p>
+
+  <div class="card">
+    <div class="card-title">Your NORCET 10 Mains attempt</div>
+
+    <div class="seg" role="tablist" aria-label="Entry mode">
+      <button type="button" class="active" data-mode="rw" role="tab" aria-selected="true">Right / Wrong</button>
+      <button type="button" data-mode="marks" role="tab" aria-selected="false">Direct marks</button>
+    </div>
+
+    <div id="rwPanel">
+      <div class="rowfields">
+        <div class="field">
+          <div class="lbl"><span>Correct answers</span><span>+1</span></div>
+          <div class="stepper">
+            <button type="button" id="decC" aria-label="Decrease correct">−</button>
+            <input type="number" id="inpC" value="86" inputmode="numeric">
+            <button type="button" id="incC" aria-label="Increase correct">+</button>
+          </div>
+        </div>
+        <div class="field wrong">
+          <div class="lbl"><span>Wrong answers</span><span>−0.25</span></div>
+          <div class="stepper">
+            <button type="button" id="decW" aria-label="Decrease wrong">−</button>
+            <input type="number" id="inpW" value="18" inputmode="numeric">
+            <button type="button" id="incW" aria-label="Increase wrong">+</button>
+          </div>
+        </div>
+      </div>
+      <div class="summary">
+        <div>
+          <div class="l1" id="marksLine">Marks: 81.50 / 160</div>
+          <div class="l2" id="unansLine">Unanswered: 56 · NORCET 10 Mains · 160 questions</div>
+        </div>
+        <div class="score" id="scoreBig">81.50</div>
+      </div>
+    </div>
+
+    <div id="marksPanel" style="display:none">
+      <div class="marksrow">
+        <input type="number" id="inpMarks" value="82" min="0" max="160" step="1">
+        <span>/ 160</span>
+      </div>
+      <div class="marksbar">
+        <div class="track"></div>
+        <div class="fill" id="fillBar"></div>
+        <div class="thumb" id="thumbDot"></div>
+        <input type="range" id="rangeMarks" min="0" max="160" step="1" value="82">
+      </div>
+      <div class="scalelbl"><span>0</span><span>160</span></div>
+    </div>
+
+    <div class="catlbl">Category</div>
+    <div class="chips" id="catChips">
+      <button type="button" class="chip active" data-cat="UR">UR</button>
+      <button type="button" class="chip" data-cat="EWS">EWS</button>
+      <button type="button" class="chip" data-cat="OBC">OBC</button>
+      <button type="button" class="chip" data-cat="SC">SC</button>
+      <button type="button" class="chip" data-cat="ST">ST</button>
+    </div>
+
+    <label class="pwbd">
+      <input type="checkbox" id="pwbdCheck">
+      <span>I'm applying under the PwBD category (cutoff relaxation applies)</span>
+    </label>
+
+    <button type="button" class="predict-btn" id="predictBtn">
+      Predict my chances
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M13 6l6 6-6 6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </button>
+  </div>
+
+  <div class="card" id="result">
+    <div class="rhead">
+      <div class="ring" id="ring">
+        <div class="hole">
+          <div class="pct" id="pctBig">—</div>
+          <div class="pctlbl">chance of<br>selection</div>
+        </div>
+      </div>
+      <div style="flex:1;min-width:0">
+        <span class="badge" id="badge"></span>
+        <div class="headline" id="headline"></div>
+        <div class="subtext" id="subtext"></div>
+      </div>
+    </div>
+
+    <div class="stats">
+      <div class="stat"><div class="k">Your Mains Score</div><div class="v" id="statScore">—</div></div>
+      <div class="stat"><div class="k">Estimated Percentile</div><div class="v" id="statPctl">—</div></div>
+      <div class="stat"><div class="k">Questions Attempted</div><div class="v" id="statAtt">—</div></div>
+    </div>
+
+    <div class="actions-title">Ab aap kya kar sakte hain?</div>
+    <div class="actions" id="actions"></div>
+
+    <div class="quote">
+      <div class="qtext">
+        <span class="mark" id="quoteMark">"</span>
+        <span class="qbody" id="quoteBody"></span>
+      </div>
+      <span class="attrib">NPrep</span>
+    </div>
+  </div>
+
+  <p class="disclaimer">This is an illustrative prototype built on mock cutoff and pool-size data for demonstration only — not a real prediction. AIIMS alone declares NORCET ranks and allotments; NPrep is not affiliated with AIIMS or any examination authority.</p>
+
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>

@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <title>NORCET Rank Predictor</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Estimate your AIIMS NORCET Mains selection chances from your score.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -213,10 +213,27 @@
   @media (max-width:820px){
     .two-col{grid-template-columns:1fr}
   }
+
+  /* ---- mobile web-app treatment: bottom app-bar CTA, tighter shell ---- */
+  @media (max-width:680px){
+    body{border-top:none}
+    .wrap{padding:20px 16px calc(96px + env(safe-area-inset-bottom))}
+    .eyebrow{margin-bottom:6px}
+    h1.hero{margin-bottom:22px}
+    .two-col{gap:16px}
+    .card{padding:18px;border-radius:18px}
+
+    .analyze-btn{
+      position:fixed; left:14px; right:14px; bottom:calc(14px + env(safe-area-inset-bottom));
+      margin-top:0; height:54px; font-size:15px; border-radius:16px; z-index:30;
+    }
+    .disclaimer{margin-top:18px}
+  }
+
   @media (max-width:480px){
     .rowfields{grid-template-columns:1fr 1fr}
     .chip{width:52px;height:52px;font-size:12px}
-    .card{padding:20px}
+    .card{padding:18px}
     .resultbox{flex-direction:column;align-items:flex-start}
     .sugg-box{flex-direction:column;align-items:flex-start}
     .cta{width:100%;justify-content:center}

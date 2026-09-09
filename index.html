@@ -10,9 +10,41 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E%F0%9F%A9%BA%3C/text%3E%3C/svg%3E">
 <style>
+  /* =========================================================
+     NPrep brand theme — font + color tokens.
+     Typeface: Inter (400/500/600/700/800).
+     Keep new UI on these tokens rather than one-off hex values
+     so the whole app stays visually consistent.
+     ========================================================= */
   :root{
-    --ink:#141A33; --sub:#6C7480; --faint:#8A929E; --line:#E7EAEE; --panel:#F2F5FA;
-    --blue:#1B8EF2; --blue-dk:#1650B8; --page:#EEF2F7; --violet:#7C6CF0;
+    /* text */
+    --ink:#141A33;      /* headings, primary text, bold values */
+    --sub:#6C7480;      /* secondary / supporting text */
+    --faint:#8A929E;    /* labels, captions, placeholders */
+    --ink-soft:#3D4B70; /* mid-weight text (eyebrow label) */
+    --ink-body:#525A72; /* result-panel body copy */
+
+    /* surfaces */
+    --page:#EEF2F7;     /* page background */
+    --panel:#F2F5FA;    /* inset panel background (summary, quote) */
+    --line:#E7EAEE;     /* hairline borders */
+
+    /* brand blue */
+    --blue:#1B8EF2;
+    --blue-light:#3B9BF2;
+    --blue-dk:#1650B8;
+
+    /* brand violet (PwBD / toggle accent) */
+    --violet:#7C6CF0;
+    --violet-dk:#5B4FC4;
+    --violet-track:#D7D2F5;
+    --violet-tint-a:#F1EEFE;
+    --violet-tint-b:#F6F4FF;
+    --violet-tint-line:#E6E0FB;
+
+    /* status colors */
+    --green:#16A34A;    /* correct answers */
+    --red:#E5533D;      /* wrong answers */
   }
   *{box-sizing:border-box}
   html,body{margin:0;padding:0}
@@ -28,7 +60,7 @@
   }
   .wrap{max-width:1180px;margin:0 auto;padding:40px 20px 70px}
 
-  .eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:#3D4B70;margin-bottom:10px}
+  .eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:10px}
   h1.hero{font-size:clamp(24px,3.4vw,32px);font-weight:800;letter-spacing:-.02em;margin:0 0 34px;line-height:1.2;color:var(--ink);max-width:760px}
 
   .two-col{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:stretch}
@@ -55,8 +87,8 @@
     padding:0;letter-spacing:-.01em;
   }
   .box input:focus{outline:none}
-  .box.correct input{color:#16A34A}
-  .box.wrong input{color:#E5533D}
+  .box.correct input{color:var(--green)}
+  .box.wrong input{color:var(--red)}
   .box input::-webkit-outer-spin-button,.box input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
   .box input[type=number]{-moz-appearance:textfield}
 
@@ -85,15 +117,15 @@
 
   .pwbd{
     display:flex;align-items:center;gap:14px;padding:16px 18px;border-radius:16px;
-    background:linear-gradient(135deg,#F1EEFE,#F6F4FF);box-shadow:inset 0 0 0 1px #E6E0FB;
+    background:linear-gradient(135deg,var(--violet-tint-a),var(--violet-tint-b));box-shadow:inset 0 0 0 1px var(--violet-tint-line);
   }
   .pwbd .txt{flex:1;min-width:0}
-  .pwbd .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:#5B4FC4;margin-bottom:5px}
+  .pwbd .k{font-size:11px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--violet-dk);margin-bottom:5px}
   .pwbd .d{font-size:12.5px;line-height:1.5;color:var(--sub)}
   .switch{position:relative;flex:none;width:46px;height:27px}
   .switch input{opacity:0;width:0;height:0}
   .switch .track{
-    position:absolute;inset:0;background:#D7D2F5;border-radius:999px;cursor:pointer;transition:.2s;
+    position:absolute;inset:0;background:var(--violet-track);border-radius:999px;cursor:pointer;transition:.2s;
   }
   .switch .track:before{
     content:"";position:absolute;width:21px;height:21px;left:3px;top:3px;background:#fff;border-radius:50%;
@@ -118,7 +150,7 @@
   .badge{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;margin-bottom:7px}
   .badge svg{width:14px;height:14px;flex:none}
   .headline{font-size:15px;font-weight:700;line-height:1.4;color:var(--ink);margin-bottom:3px}
-  .subtext{font-size:13px;line-height:1.5;color:#525A72}
+  .subtext{font-size:13px;line-height:1.5;color:var(--ink-body)}
   .caption{font-size:11.5px;font-style:italic;margin-top:9px;font-weight:600}
 
   .statrow{display:flex;align-items:center;justify-content:space-between;padding:16px 2px;border-bottom:1px solid var(--line)}
@@ -150,7 +182,7 @@
 
   .analyze-btn{
     width:100%;margin-top:22px;height:58px;border:none;border-radius:16px;color:#fff;
-    background:linear-gradient(90deg,#3B9BF2,#1650B8);
+    background:linear-gradient(90deg,var(--blue-light),var(--blue-dk));
     font:inherit;font-size:16px;font-weight:800;cursor:pointer;box-shadow:0 10px 24px rgba(27,142,242,.35);
     transition:.15s; display:flex;align-items:center;justify-content:center;gap:9px;
   }
